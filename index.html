@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cruzadinha de Arquitetura Computacional</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <h1 class="titulo-principal">Cruzadinha de Arquitetura Computacional</h1>
+    <p class="subtitulo">Preencha as letras e use as pistas horizontais e verticais para completar o tabuleiro.</p>
+    <section class="conteudo-cruzadinha">
+      <section class="tabuleiro-wrapper">
+        <div class="painel-conferir">
+          <p id="contador-palavras" class="contador-palavras">0 de 14 palavras</p>
+          <div class="acoes-painel">
+            <button id="btn-conferir" class="btn-conferir" type="button">Conferir</button>
+            <button id="btn-reiniciar" class="btn-reiniciar" type="button">Reiniciar</button>
+          </div>
+        </div>
+        <p id="mensagem-final" class="mensagem-final oculta" aria-live="polite"></p>
+
+        <!-- O tabuleiro é montado dinamicamente no script.js -->
+        <div id="tabuleiro" class="tabuleiro" aria-label="Tabuleiro de cruzadinha"></div>
+      </section>
+
+      <aside class="pistas" aria-label="Lista de pistas">
+        <div class="bloco-pistas">
+          <h2>Horizontais</h2>
+          <ul id="lista-horizontais"></ul>
+        </div>
+
+        <div class="bloco-pistas">
+          <h2>Verticais</h2>
+          <ul id="lista-verticais"></ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

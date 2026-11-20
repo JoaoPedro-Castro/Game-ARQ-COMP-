@@ -1,0 +1,277 @@
+:root {
+  --cor-fundo: #eef3f8;
+  --cor-cartao: #ffffff;
+  --cor-texto: #122031;
+  --cor-borda: #b7c2ce;
+  --cor-foco: #0b63ce;
+  --cor-primaria: #0f4ea8;
+  --cor-primaria-hover: #0c418b;
+  --cor-neutra: #4f5d6d;
+  --cor-neutra-hover: #3f4b58;
+  --cor-sucesso: #146c2e;
+  --cor-sucesso-fundo: #e9f7ee;
+  --cor-erro: #a61b1b;
+  --cor-erro-fundo: #fdecec;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  overflow-x: hidden;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.titulo-principal {
+  font-size: clamp(1.3rem, 1.2rem + 1vw, 2rem);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.subtitulo {
+  margin: 0 0 14px;
+  font-size: 0.98rem;
+  color: #304154;
+}
+
+.tabuleiro-wrapper {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.painel-conferir {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  background: var(--cor-cartao);
+  border: 1px solid #d9e1ea;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.acoes-painel {
+  display: flex;
+  gap: 8px;
+}
+
+.contador-palavras {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: #0e2f57;
+}
+
+.btn-conferir {
+  font: inherit;
+  background: var(--cor-primaria);
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.btn-conferir:hover {
+  background: var(--cor-primaria-hover);
+}
+
+.btn-reiniciar {
+  font: inherit;
+  background: var(--cor-neutra);
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.btn-reiniciar:hover {
+  background: var(--cor-neutra-hover);
+}
+
+.btn-conferir:focus-visible {
+  outline: 3px solid var(--cor-foco);
+  outline-offset: 2px;
+}
+
+.btn-reiniciar:focus-visible {
+  outline: 3px solid var(--cor-foco);
+  outline-offset: 2px;
+}
+
+.mensagem-final {
+  margin: 0 0 10px;
+  color: var(--cor-sucesso);
+  font-weight: 700;
+}
+
+.oculta {
+  display: none;
+}
+
+.conteudo-cruzadinha {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(260px, 360px);
+  gap: 20px;
+  align-items: start;
+}
+
+.tabuleiro {
+  --cols: 16;
+  --rows: 11;
+  --celula: min(42px, calc((100dvw - 44px) / var(--cols)));
+
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--celula));
+  grid-template-rows: repeat(var(--rows), var(--celula));
+  gap: 1px;
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.casa {
+  position: relative;
+  width: var(--celula);
+  height: var(--celula);
+  border: 1px solid var(--cor-borda);
+  border-radius: 4px;
+  background: #fff;
+  text-align: center;
+  font-size: clamp(14px, 2.4vw, 20px);
+  font-weight: 700;
+  text-transform: uppercase;
+  outline: none;
+  color: #1a2330;
+}
+
+.casa:focus {
+  border-color: var(--cor-foco);
+  box-shadow: 0 0 0 3px rgba(11, 99, 206, 0.23);
+}
+
+.casa-vazia {
+  visibility: hidden;
+  width: var(--celula);
+  height: var(--celula);
+}
+
+.numero {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  font-size: clamp(8px, 1.8vw, 10px);
+  line-height: 1;
+  font-weight: 600;
+  color: #4b5b6b;
+  pointer-events: none;
+}
+
+.casa-wrapper {
+  position: relative;
+  width: var(--celula);
+  height: var(--celula);
+}
+
+.pistas {
+  background: var(--cor-cartao);
+  border: 1px solid #d9e1ea;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.bloco-pistas + .bloco-pistas {
+  margin-top: 14px;
+}
+
+.bloco-pistas h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.bloco-pistas ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.bloco-pistas li + li {
+  margin-top: 6px;
+}
+
+.btn-pista {
+  font: inherit;
+  color: var(--cor-primaria);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.btn-pista:hover {
+  text-decoration: underline;
+}
+
+.btn-pista:focus-visible {
+  outline: 2px solid var(--cor-foco);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Estados visuais de correção (caso a lógica aplique estas classes). */
+.casa-correta {
+  background: var(--cor-sucesso-fundo);
+  border-color: var(--cor-sucesso);
+  color: #0f4f22;
+}
+
+.casa-incorreta {
+  background: var(--cor-erro-fundo);
+  border-color: var(--cor-erro);
+  color: #7c1515;
+}
+
+.pista-correta {
+  color: var(--cor-sucesso);
+  font-weight: 700;
+}
+
+.pista-incorreta {
+  color: var(--cor-erro);
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .conteudo-cruzadinha {
+    grid-template-columns: 1fr;
+  }
+
+  .painel-conferir {
+    flex-wrap: wrap;
+  }
+
+  .tabuleiro {
+    --celula: min(38px, calc((100dvw - 40px) / var(--cols)));
+  }
+
+  .pistas {
+    margin-top: 8px;
+  }
+}
