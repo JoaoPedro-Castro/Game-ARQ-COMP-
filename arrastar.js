@@ -50,7 +50,8 @@
     erros: 0,
     chipSelecionado: null,
     drag: null,
-    bloquearCliqueAte: 0
+    bloquearCliqueAte: 0,
+    primeiraInteracaoArrastar: false
   };
 
   const refs = {
@@ -160,8 +161,14 @@
   function construirLayoutBase() {
     root.innerHTML = `
       <section class="arrastar-cabecalho reveal-on-scroll">
-        <h2 class="arrastar-titulo">MODO ARRASTAR</h2>
-        <p class="arrastar-fase-info" id="arrastar-fase-info">FASE 1/5 · INICIANDO</p>
+        <div>
+          <h2 class="arrastar-titulo">MODO ARRASTAR</h2>
+          <p class="arrastar-subtitulo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3l-4 4v-4H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2 4h6v2H9Zm0 4h4v2H9Z"/></svg>
+            Arraste cada resposta até a pista certa.
+          </p>
+        </div>
+        <p class="arrastar-fase-info" id="arrastar-fase-info">Fase 1 de 5 · Iniciando</p>
       </section>
 
       <section class="arrastar-seletor reveal-on-scroll">
@@ -171,14 +178,20 @@
 
       <section class="arrastar-jogo reveal-on-scroll">
         <div class="arrastar-placar">
-          <p class="arrastar-selo" id="arrastar-acertos">ACERTOS 0 / 0</p>
-          <p class="arrastar-selo" id="arrastar-erros">ERROS 0</p>
+          <p class="arrastar-selo" id="arrastar-acertos">Acertos 0 / 0</p>
+          <p class="arrastar-selo" id="arrastar-erros">Erros 0</p>
+        </div>
+        <div class="legenda-cores arrastar-legenda" aria-label="Legenda de cores do modo arrastar">
+          <span><i class="bolinha certo"></i> Certo</span>
+          <span><i class="bolinha errado"></i> Errado ✘</span>
+          <span><i class="bolinha selecionada"></i> Selecionado</span>
         </div>
         <div class="arrastar-grade-pistas" id="arrastar-grade-pistas"></div>
       </section>
 
       <section class="arrastar-banco reveal-on-scroll">
-        <h3 class="arrastar-banco-titulo">BANCO DE CHIPS</h3>
+        <h3 class="arrastar-banco-titulo">Banco de respostas</h3>
+        <p class="arrastar-banco-ajuda" id="arrastar-banco-ajuda">Arraste uma resposta para cá.</p>
         <div class="arrastar-chips" id="arrastar-chips"></div>
       </section>
 
@@ -197,18 +210,18 @@
     refs.live = document.getElementById("arrastar-live");
 
     refs.fases.innerHTML = FASES.map((_, i) => `
-      <button class="arrastar-fase-btn" data-phase-index="${i}" type="button">[ ${String(i + 1).padStart(2, "0")} ]</button>
+      <button class="arrastar-fase-btn" data-phase-index="${i}" type="button">${String(i + 1).padStart(2, "0")}</button>
     `).join("");
   }
 
   function atualizarPlacar() {
-    refs.acertos.textContent = `ACERTOS ${estado.acertos} / ${estado.slots.length}`;
-    refs.erros.textContent = `ERROS ${estado.erros}`;
+    refs.acertos.textContent = `Acertos ${estado.acertos} / ${estado.slots.length}`;
+    refs.erros.textContent = `Erros ${estado.erros}`;
   }
 
   function atualizarCabecalhoFase() {
     const faseNumero = estado.faseIndex + 1;
-    refs.faseNome.textContent = `FASE ${faseNumero}/5 · ${estado.faseDados.nome.toUpperCase()}`;
+    refs.faseNome.textContent = `Fase ${faseNumero} de 5 · ${estado.faseDados.nome}`;
 
     refs.fases.querySelectorAll(".arrastar-fase-btn").forEach((btn) => {
       const ativa = Number(btn.dataset.phaseIndex) === estado.faseIndex;
@@ -296,6 +309,17 @@
     renderizarPistas();
     renderizarChips();
     limparFimDeFase();
+
+    const ajuda = document.getElementById("arrastar-banco-ajuda");
+    if (ajuda && !estado.primeiraInteracaoArrastar) {
+      ajuda.classList.add("pulsando");
+    }
+
+    const primeiraZona = refs.pistas.querySelector(".arrastar-dropzone");
+    if (primeiraZona && !estado.primeiraInteracaoArrastar && !prefereReduzirMovimento) {
+      primeiraZona.classList.add("ativa");
+      setTimeout(() => primeiraZona.classList.remove("ativa"), 900);
+    }
   }
 
   function pegarChipPorId(chipId) {
@@ -407,7 +431,7 @@
       marcarErroVisual(chip);
       tocar("erro");
       vibrar(14);
-      anunciar("Resposta incorreta. Tente outro chip.");
+      anunciar("Quase! Tente outra pista.");
       return false;
     }
 
@@ -427,7 +451,7 @@
     efeitoParticulas(dropzone);
     tocar("acerto");
     vibrar(30);
-    anunciar(`Acerto na pista ${slot.n}.`);
+    anunciar("Boa! Essa resposta combina com a pista.");
 
     verificarFimDeFase();
     return true;
@@ -546,6 +570,7 @@
     if (e.pointerType === "mouse" && e.button !== 0) return;
 
     e.preventDefault();
+    marcarPrimeiraInteracao();
     iniciarArraste(chip, e);
   }
 
@@ -616,6 +641,7 @@
 
     const chip = e.target.closest(".arr-chip");
     if (chip && refs.chips.contains(chip) && chip.dataset.usado !== "1") {
+      marcarPrimeiraInteracao();
       const jaSelecionado = estado.chipSelecionado === chip.dataset.chipId;
       if (jaSelecionado) {
         limparSelecaoChip();
@@ -627,6 +653,7 @@
 
     const dropzone = e.target.closest(".arrastar-dropzone");
     if (dropzone && slotLivre(dropzone) && estado.chipSelecionado) {
+      marcarPrimeiraInteracao();
       const chipSel = pegarChipPorId(estado.chipSelecionado);
       if (!chipSel) return;
       posicionarChip(chipSel, dropzone);
@@ -643,6 +670,7 @@
     const chip = alvo.closest(".arr-chip");
     if (chip && refs.chips.contains(chip) && chip.dataset.usado !== "1") {
       e.preventDefault();
+      marcarPrimeiraInteracao();
       selecionarChip(chip.dataset.chipId);
       return;
     }
@@ -650,6 +678,7 @@
     const dropzone = alvo.closest(".arrastar-dropzone");
     if (dropzone && slotLivre(dropzone) && estado.chipSelecionado) {
       e.preventDefault();
+      marcarPrimeiraInteracao();
       const chipSel = pegarChipPorId(estado.chipSelecionado);
       if (!chipSel) return;
       posicionarChip(chipSel, dropzone);
@@ -680,7 +709,27 @@
     });
   }
 
+  function marcarPrimeiraInteracao() {
+    if (estado.primeiraInteracaoArrastar) return;
+    estado.primeiraInteracaoArrastar = true;
+
+    const ajuda = document.getElementById("arrastar-banco-ajuda");
+    ajuda?.classList.remove("pulsando");
+    refs.pistas.querySelectorAll(".arrastar-dropzone.ativa").forEach((z) => z.classList.remove("ativa"));
+
+    try {
+      localStorage.setItem("cruzadinha.arrastar.interagiu", "1");
+    } catch {
+      // localStorage pode falhar em contexto restrito.
+    }
+  }
+
   validarFases();
+  try {
+    estado.primeiraInteracaoArrastar = localStorage.getItem("cruzadinha.arrastar.interagiu") === "1";
+  } catch {
+    estado.primeiraInteracaoArrastar = false;
+  }
   construirLayoutBase();
   ligarEventos();
   montarFase(0);

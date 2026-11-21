@@ -40,7 +40,7 @@
   }
 
   function atualizarRotuloBotaoNeve() {
-    btnToggleNeve.textContent = ligada ? "❄ NEVE: ON" : "❄ NEVE: OFF";
+    btnToggleNeve.textContent = ligada ? "❄ Neve: ligada" : "❄ Neve: desligada";
     btnToggleNeve.setAttribute("aria-pressed", String(ligada));
   }
 

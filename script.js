@@ -407,6 +407,10 @@ function montarListaPistas(elementoLista, palavras) {
     botao.type = "button";
     botao.className = "btn-pista";
     botao.dataset.numero = String(palavra.n);
+    botao.dataset.resposta = palavra.resposta;
+    botao.dataset.dir = palavra.dir;
+    botao.dataset.linha = String(palavra.linha);
+    botao.dataset.coluna = String(palavra.coluna);
     botao.textContent = palavra.pista;
     botao.dataset.textoOriginal = botao.textContent;
 

@@ -17,19 +17,29 @@
   <canvas id="neve-canvas" aria-hidden="true"></canvas>
 
   <main class="app">
+    <button id="btn-como-jogar" class="btn-como-jogar" type="button">? Como jogar</button>
+
     <!-- Barra superior técnica -->
     <header class="topbar card corte reveal-on-scroll">
-      <div class="marca mono">ARQ COMP™</div>
+      <div class="marca">Arq Comp</div>
 
       <section class="abas" role="tablist" aria-label="Modos do jogo">
-        <button id="tab-cruzadinha" class="aba ativa mono" role="tab" aria-selected="true" aria-controls="painel-cruzadinha" type="button" tabindex="0">[ CRUZADINHA ]</button>
-        <button id="tab-arrastar" class="aba mono" role="tab" aria-selected="false" aria-controls="painel-arrastar" type="button" tabindex="-1">[ MODO ARRASTAR ]</button>
+        <button id="tab-cruzadinha" class="aba ativa" role="tab" aria-selected="true" aria-controls="painel-cruzadinha" type="button" tabindex="0">
+          <span class="aba-icone" aria-hidden="true">⌨️</span>
+          <span class="aba-texto">Cruzadinha</span>
+          <small>Digite as respostas</small>
+        </button>
+        <button id="tab-arrastar" class="aba" role="tab" aria-selected="false" aria-controls="painel-arrastar" type="button" tabindex="-1">
+          <span class="aba-icone" aria-hidden="true">🧩</span>
+          <span class="aba-texto">Modo arrastar</span>
+          <small>Arraste as respostas</small>
+        </button>
         <span class="indicador-aba" aria-hidden="true"></span>
       </section>
 
       <div class="acoes-topbar">
-        <button id="toggle-neve" class="btn-toggle mono" type="button" aria-pressed="true">❄ NEVE: ON</button>
-        <button id="toggle-som" class="btn-toggle mono" type="button" aria-pressed="true">🔊 SOM: ON</button>
+        <button id="toggle-neve" class="btn-toggle" type="button" aria-pressed="true">❄ Neve: ligada</button>
+        <button id="toggle-som" class="btn-toggle" type="button" aria-pressed="true">🔊 Som: ligado</button>
       </div>
     </header>
 
@@ -47,16 +57,16 @@
       </svg>
 
       <div class="hero-conteudo">
-        <p class="mono etiqueta">[ ARQUITETURA COMPUTACIONAL ]</p>
+        <p class="etiqueta">Arquitetura computacional</p>
         <h1 class="hero-titulo">
           <span>CRUZADINHA</span>
           <span>ARQUITETURA COMPUTACIONAL</span>
         </h1>
         <p class="hero-subtitulo">Conecte pistas, preencha os blocos de gelo e domine os termos essenciais da arquitetura.</p>
 
-        <div class="hero-meta mono">
-          <span>[ EDIÇÃO 01 ]</span>
-          <span>[ 14 TERMOS ]</span>
+        <div class="hero-meta">
+          <span>Edição 01</span>
+          <span>14 termos</span>
         </div>
       </div>
 
@@ -70,10 +80,13 @@
     <section id="painel-cruzadinha" class="painel-aba" role="tabpanel" aria-labelledby="tab-cruzadinha">
       <section class="secao-titulo reveal-on-scroll">
         <div>
-          <p class="mono etiqueta">[ SPRINT 3 ]</p>
           <h2>TABULEIRO</h2>
+          <p class="modo-instrucao">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm2 4h2v2H8Zm4 0h2v2h-2Zm4 0h2v2h-2Zm-8 4h2v2H8Zm4 0h2v2h-2Zm4 0h2v2h-2Z"/></svg>
+            Clique numa casa numerada, digite a resposta e use as pistas ao lado.
+          </p>
         </div>
-        <p class="mono meta-tabuleiro">HORIZONTAIS: 5 / VERTICAIS: 9</p>
+        <p class="meta-tabuleiro">Horizontais: 5 • Verticais: 9</p>
       </section>
 
       <section class="conteudo-cruzadinha">
@@ -96,6 +109,13 @@
           </div>
 
           <p id="mensagem-final" class="mensagem-final oculta" aria-live="polite"></p>
+          <p id="mensagem-ajuda-cruzadinha" class="mensagem-ajuda"></p>
+
+          <div class="legenda-cores" aria-label="Legenda de cores">
+            <span><i class="bolinha certo"></i> Certo</span>
+            <span><i class="bolinha errado"></i> Errado ✘</span>
+            <span><i class="bolinha selecionada"></i> Casa selecionada</span>
+          </div>
 
           <!-- O tabuleiro é montado dinamicamente no script.js -->
           <div id="tabuleiro" class="tabuleiro" aria-label="Tabuleiro de cruzadinha"></div>
@@ -120,6 +140,66 @@
     </section>
   </main>
 
+  <!-- Modal de ajuda acessível -->
+  <div id="modal-ajuda" class="modal-ajuda" role="dialog" aria-modal="true" aria-labelledby="titulo-ajuda" hidden>
+    <div class="modal-fundo" data-fechar-modal="true"></div>
+    <section class="modal-painel" role="document">
+      <header class="modal-topo">
+        <h2 id="titulo-ajuda">Como jogar</h2>
+        <button id="fechar-modal-ajuda" class="btn-modal-fechar" type="button" aria-label="Fechar ajuda">×</button>
+      </header>
+
+      <div class="modal-abas" role="tablist" aria-label="Ajuda por modo">
+        <button class="modal-aba ativa" role="tab" aria-selected="true" aria-controls="ajuda-cruzadinha" id="tab-ajuda-cruzadinha" type="button">Cruzadinha</button>
+        <button class="modal-aba" role="tab" aria-selected="false" aria-controls="ajuda-arrastar" id="tab-ajuda-arrastar" type="button">Modo arrastar</button>
+      </div>
+
+      <section id="ajuda-cruzadinha" class="modal-conteudo" role="tabpanel" aria-labelledby="tab-ajuda-cruzadinha">
+        <ol>
+          <li>
+            <svg viewBox="0 0 64 40" aria-hidden="true"><rect x="5" y="6" width="54" height="28" rx="6"/><path d="M18 14h8v8h-8zM30 14h8v8h-8zM42 14h8v8h-8z"/></svg>
+            Clique em uma casa numerada para começar.
+          </li>
+          <li>
+            <svg viewBox="0 0 64 40" aria-hidden="true"><rect x="6" y="8" width="52" height="24" rx="5"/><path d="M14 16h36M14 22h20"/></svg>
+            Digite a letra e avance pela palavra.
+          </li>
+          <li>
+            <svg viewBox="0 0 64 40" aria-hidden="true"><rect x="10" y="10" width="44" height="20" rx="10"/><path d="M20 20h24"/></svg>
+            Use as pistas ao lado para completar tudo.
+          </li>
+          <li>
+            <svg viewBox="0 0 64 40" aria-hidden="true"><rect x="11" y="10" width="42" height="20" rx="10"/><path d="M22 20h20"/></svg>
+            Clique em Conferir para ver seu progresso.
+          </li>
+        </ol>
+      </section>
+
+      <section id="ajuda-arrastar" class="modal-conteudo" role="tabpanel" aria-labelledby="tab-ajuda-arrastar" hidden>
+        <ol>
+          <li>
+            <svg viewBox="0 0 64 40" aria-hidden="true"><rect x="7" y="6" width="22" height="12" rx="5"/><rect x="35" y="22" width="22" height="12" rx="5"/></svg>
+            Escolha um chip no banco de respostas.
+          </li>
+          <li>
+            <svg viewBox="0 0 64 40" aria-hidden="true"><path d="M10 20h40"/><path d="M42 14l8 6-8 6"/></svg>
+            Arraste o chip até a pista certa.
+          </li>
+          <li>
+            <svg viewBox="0 0 64 40" aria-hidden="true"><rect x="8" y="8" width="48" height="24" rx="8"/><path d="M20 20h24"/></svg>
+            Você também pode tocar no chip e depois na área de soltar.
+          </li>
+          <li>
+            <svg viewBox="0 0 64 40" aria-hidden="true"><circle cx="24" cy="20" r="7"/><circle cx="40" cy="20" r="7"/></svg>
+            Complete todas as pistas para concluir a fase.
+          </li>
+        </ol>
+      </section>
+    </section>
+  </div>
+
+  <div id="toast-area" class="toast-area" aria-live="polite" aria-atomic="true"></div>
+
   <footer class="rodape" aria-label="Rodapé decorativo">
     <p class="rodape-frase">CONSTRUÍDO EM BITS.<br />PENSADO EM CAMADAS.</p>
     <p class="rodape-rotulo esquerda mono">SP TECH · SPRINT 3</p>
@@ -131,5 +211,6 @@
   <script src="sons.js"></script>
   <script src="arrastar.js"></script>
   <script src="visual.js"></script>
+  <script src="ux.js"></script>
 </body>
 </html>

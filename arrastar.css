@@ -1,11 +1,11 @@
 /*
-  Estilos exclusivos do Modo Arrastar.
-  Mantém o visual glacial e não interfere na lógica da cruzadinha.
+  Camada visual do modo arrastar.
+  Sem alterar mecânicas do arrastar.js.
 */
 
 .arrastar-root {
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .arrastar-cabecalho,
@@ -13,13 +13,10 @@
 .arrastar-jogo,
 .arrastar-banco,
 .arrastar-fim {
-  background: linear-gradient(160deg, color-mix(in srgb, var(--aco), transparent 24%), color-mix(in srgb, var(--glacial), transparent 15%));
-  border: 1px solid color-mix(in srgb, var(--gelo), transparent 70%);
-  box-shadow: 0 20px 50px #04111f66, inset 0 0 0 1px #ffffff08;
-  border-radius: var(--raio, 16px);
-  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--aco), transparent 20%), color-mix(in srgb, var(--glacial), transparent 10%));
+  border: 1px solid color-mix(in srgb, var(--gelo), transparent 66%);
+  border-radius: var(--raio-card);
+  box-shadow: 0 14px 34px #04111f54;
   padding: clamp(12px, 2vw, 18px);
 }
 
@@ -27,26 +24,38 @@
   display: flex;
   justify-content: space-between;
   align-items: end;
-  gap: 12px;
+  gap: 10px;
 }
 
 .arrastar-titulo {
   margin: 0;
   font-family: "Anton", Impact, "Arial Narrow", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.4rem);
   line-height: 0.94;
   color: var(--branco);
-  font-size: clamp(1.8rem, 1.2rem + 2vw, 3rem);
+}
+
+.arrastar-subtitulo {
+  margin: 6px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.5;
+  font-size: 1rem;
+  color: #e6f2ff;
+}
+
+.arrastar-subtitulo svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--agua-clara);
+  flex: 0 0 auto;
 }
 
 .arrastar-fase-info {
   margin: 0;
-  font-family: "Space Mono", ui-monospace, monospace;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.78rem;
   color: var(--agua-clara);
+  font: 600 1rem/1.4 "Barlow", system-ui, sans-serif;
   text-align: right;
 }
 
@@ -54,7 +63,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
@@ -66,70 +75,58 @@
 
 .arrastar-fase-btn,
 .arrastar-reiniciar {
+  min-height: 44px;
   border: 1px solid color-mix(in srgb, var(--gelo), transparent 50%);
+  border-radius: var(--raio-pilula);
   background: transparent;
   color: var(--neve);
-  font: 700 0.78rem/1 "Space Mono", ui-monospace, monospace;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  min-height: 40px;
-  padding: 10px 12px;
+  font: 700 0.95rem/1 "Barlow", system-ui, sans-serif;
+  padding: 10px 14px;
   cursor: pointer;
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
-}
-
-.arrastar-fase-btn:hover,
-.arrastar-reiniciar:hover {
-  transform: translateY(-1px);
-  background: #ffffff12;
 }
 
 .arrastar-fase-btn.ativa {
-  color: var(--branco);
-  border-color: color-mix(in srgb, var(--agua), var(--gelo) 35%);
   background: color-mix(in srgb, var(--royal), transparent 72%);
+  border-color: #92b3ea;
 }
 
 .arrastar-reiniciar {
   color: var(--agua-clara);
 }
 
-.arrastar-jogo {
-  display: grid;
-  gap: 12px;
-}
-
 .arrastar-placar {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .arrastar-selo {
-  border: 1px solid color-mix(in srgb, var(--gelo), transparent 55%);
-  background: #07142260;
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--gelo), transparent 56%);
+  border-radius: var(--raio-pilula);
+  background: #0a1d2f75;
   color: var(--neve);
-  border-radius: 999px;
+  padding: 9px 12px;
   min-height: 36px;
-  padding: 8px 12px;
-  font: 700 0.76rem/1 "Space Mono", ui-monospace, monospace;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font: 600 0.95rem/1 "Barlow", system-ui, sans-serif;
+}
+
+.arrastar-legenda {
+  margin-top: 8px;
 }
 
 .arrastar-grade-pistas {
+  margin-top: 8px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
 .arrastar-pista-card {
-  background: #06152256;
-  border: 1px solid #d4e8ff2c;
-  border-radius: 12px;
+  border: 1px solid #d4e8ff2f;
+  border-radius: var(--raio-medio);
+  background: #0d21386e;
   padding: 10px;
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
   display: grid;
   gap: 8px;
 }
@@ -137,97 +134,85 @@
 .arrastar-pista-num {
   margin: 0;
   color: var(--agua);
-  font: 700 0.74rem/1 "Space Mono", ui-monospace, monospace;
+  font: 700 0.88rem/1 "Space Mono", ui-monospace, monospace;
 }
 
 .arrastar-pista-texto {
   margin: 0;
   color: var(--neve);
-  font: 600 0.96rem/1.35 "Barlow", system-ui, sans-serif;
+  font: 600 1rem/1.5 "Barlow", system-ui, sans-serif;
 }
 
 .arrastar-dropzone {
-  border: 1px dashed #dceefb7e;
-  background: #0e243855;
-  color: #d7e9fa;
-  border-radius: 10px;
   min-height: 52px;
-  padding: 9px 10px;
-  font: 700 0.75rem/1 "Space Mono", ui-monospace, monospace;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  border: 2px dashed #d7e9fc7a;
+  border-radius: var(--raio-medio);
+  background: #0820395c;
+  color: #d9ecff;
+  font: 600 0.95rem/1 "Barlow", system-ui, sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  padding: 10px;
   cursor: pointer;
-  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background-color 160ms ease;
-}
-
-.arrastar-dropzone:hover {
-  border-color: var(--royal-claro);
 }
 
 .arrastar-dropzone.ativa {
   border-color: var(--royal-claro);
-  box-shadow: 0 0 0 3px #4c7bff42;
-  transform: translateY(-1px);
+  box-shadow: 0 0 0 3px #4c7bff47;
 }
 
 .arrastar-dropzone.preenchida {
   border-style: solid;
   border-color: color-mix(in srgb, var(--agua), var(--gelo) 30%);
-  background: color-mix(in srgb, var(--agua), transparent 77%);
+  background: color-mix(in srgb, var(--agua), transparent 74%);
 }
 
 .arrastar-dropzone.preenchida-correta {
-  box-shadow: 0 0 0 3px #2ec4b644;
-}
-
-.arrastar-dropzone .chip-fixado {
-  pointer-events: none;
+  box-shadow: 0 0 0 3px #2ec4b640;
 }
 
 .arrastar-banco-titulo {
   margin: 0 0 10px;
   color: var(--branco);
   font-family: "Anton", Impact, "Arial Narrow", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  font-size: clamp(1.2rem, 1rem + 1vw, 1.8rem);
+  font-size: clamp(1.2rem, 0.95rem + 1.1vw, 1.8rem);
+}
+
+.arrastar-banco-ajuda {
+  margin: 0 0 10px;
+  color: #e3f0ff;
+  font-size: 0.98rem;
+}
+
+.arrastar-banco-ajuda.pulsando {
+  animation: arr-pulse 1.2s ease-in-out infinite;
 }
 
 .arrastar-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  min-height: 54px;
 }
 
 .arr-chip {
   min-height: 44px;
   border: 1px solid #8caed0;
-  border-radius: 10px;
-  background: linear-gradient(165deg, #f7fbff 0%, #dfeaf8 100%);
+  border-radius: var(--raio-medio);
+  background: linear-gradient(165deg, #f8fbff 0%, #dfeaf8 100%);
   color: var(--abismo);
-  font: 700 0.9rem/1 "Anton", Impact, "Arial Narrow", sans-serif;
-  letter-spacing: 0.04em;
+  font: 700 1rem/1 "Anton", Impact, "Arial Narrow", sans-serif;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   padding: 10px 12px;
   cursor: grab;
-  user-select: none;
   touch-action: none;
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  box-shadow: inset 0 1px 0 #ffffffbf, 0 4px 10px #03101942;
-  transition: transform 140ms ease, opacity 140ms ease, box-shadow 140ms ease;
-}
-
-.arr-chip:hover {
-  transform: translateY(-1px);
+  user-select: none;
 }
 
 .arr-chip.selecionado {
-  box-shadow: 0 0 0 3px #4c7bff4f, inset 0 1px 0 #ffffffd6;
+  box-shadow: 0 0 0 3px #4c7bff50;
 }
 
 .arr-chip.arrastando-origem {
@@ -238,19 +223,18 @@
   cursor: default;
 }
 
-.arr-chip.erro {
-  animation: arr-shake 260ms ease;
+.arr-chip.acerto {
+  background: linear-gradient(165deg, #bff3ea, #8be2d6);
+  border-color: #1b7f75;
 }
 
-.arr-chip.acerto {
-  background: linear-gradient(165deg, #bff3ea 0%, #83dfd2 100%);
-  border-color: color-mix(in srgb, var(--agua), #0f524d 35%);
+.arr-chip.erro {
+  animation: arr-shake 250ms ease;
 }
 
 .arr-chip .icone-status {
   margin-left: 8px;
-  font-family: "Space Mono", ui-monospace, monospace;
-  font-size: 0.75rem;
+  font: 700 0.82rem/1 "Space Mono", ui-monospace, monospace;
 }
 
 .arr-chip .icone-status.erro {
@@ -264,73 +248,59 @@
   z-index: 9999;
   pointer-events: none;
   min-height: 44px;
-  border: 1px solid #b0c7e3;
-  background: linear-gradient(165deg, #ffffff 0%, #e6f0fc 100%);
+  border: 1px solid #adc4e0;
+  border-radius: var(--raio-medio);
+  background: linear-gradient(165deg, #ffffff 0%, #e7f0fc 100%);
   color: var(--abismo);
-  font: 700 0.9rem/1 "Anton", Impact, "Arial Narrow", sans-serif;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: 11px 13px;
-  border-radius: 10px;
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  box-shadow: 0 14px 26px #020c155c;
+  font: 700 1rem/1 "Anton", Impact, "Arial Narrow", sans-serif;
+  padding: 10px 13px;
+  box-shadow: 0 12px 24px #0000005e;
 }
 
 .arrastar-live {
   min-height: 1.2em;
   margin: 0;
   color: var(--agua-clara);
-  font: 700 0.8rem/1 "Space Mono", ui-monospace, monospace;
+  font: 600 0.95rem/1.4 "Barlow", system-ui, sans-serif;
 }
 
 .arrastar-fim {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .arrastar-fim h4 {
   margin: 0;
-  color: var(--branco);
   font-family: "Anton", Impact, "Arial Narrow", sans-serif;
-  text-transform: uppercase;
-  font-size: clamp(1.4rem, 1rem + 1.5vw, 2rem);
-  line-height: 0.95;
+  font-size: clamp(1.4rem, 1rem + 1.4vw, 2rem);
+  color: var(--branco);
 }
 
 .arrastar-fim p {
   margin: 0;
   color: var(--neve);
-  font: 700 0.86rem/1.35 "Space Mono", ui-monospace, monospace;
+  font-size: 1rem;
 }
 
 .arrastar-fim-acoes {
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  gap: 8px;
 }
 
 .arrastar-fim-acoes button {
+  min-height: 44px;
   border: 1px solid color-mix(in srgb, var(--gelo), transparent 48%);
-  background: #ffffff0d;
+  border-radius: var(--raio-pilula);
+  background: #ffffff12;
   color: var(--neve);
-  font: 700 0.78rem/1 "Space Mono", ui-monospace, monospace;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  min-height: 42px;
-  padding: 10px 12px;
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  font: 700 0.94rem/1 "Barlow", system-ui, sans-serif;
+  padding: 10px 14px;
   cursor: pointer;
 }
 
-.arrastar-fim-acoes button:hover {
-  background: #ffffff18;
-}
-
-/* Partículas rápidas no acerto de slot */
 .arr-burst {
   position: fixed;
-  left: 0;
-  top: 0;
   width: 0;
   height: 0;
   pointer-events: none;
@@ -341,41 +311,27 @@
   position: absolute;
   width: 6px;
   height: 6px;
-  border-radius: 2px;
+  border-radius: 50%;
   background: var(--agua);
   animation: arr-burst 420ms ease-out forwards;
 }
 
 @keyframes arr-burst {
-  from {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translate(var(--dx), var(--dy)) scale(0.5);
-  }
+  from { opacity: 1; transform: translate(0,0); }
+  to { opacity: 0; transform: translate(var(--dx), var(--dy)); }
 }
 
 @keyframes arr-shake {
-  0%, 100% { transform: translateX(0); }
+  0%,100% { transform: translateX(0); }
   25% { transform: translateX(-2px); }
-  50% { transform: translateX(2px); }
-  75% { transform: translateX(-1px); }
+  60% { transform: translateX(2px); }
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
+@keyframes arr-pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.55; }
 }
 
-/* Foco visível em tudo que recebe teclado */
 .arrastar-root button:focus-visible,
 .arrastar-root .arr-chip:focus-visible,
 .arrastar-root .arrastar-dropzone:focus-visible {
@@ -386,6 +342,15 @@
 @media (max-width: 980px) {
   .arrastar-grade-pistas {
     grid-template-columns: 1fr;
+  }
+
+  .arrastar-cabecalho {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .arrastar-fase-info {
+    text-align: left;
   }
 }
 

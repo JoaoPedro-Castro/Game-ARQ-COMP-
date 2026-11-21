@@ -30,7 +30,7 @@
   }
 
   function atualizarRotuloSom() {
-    btnToggleSom.textContent = somLigado ? "🔊 SOM: ON" : "🔇 SOM: OFF";
+    btnToggleSom.textContent = somLigado ? "🔊 Som: ligado" : "🔇 Som: desligado";
     btnToggleSom.setAttribute("aria-pressed", String(somLigado));
   }
 
