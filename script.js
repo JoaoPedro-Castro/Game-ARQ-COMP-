@@ -426,3 +426,51 @@ montarListaPistas(listaVerticais, verticais);
 contadorPalavras.textContent = `0 de ${PALAVRAS.length} palavras`;
 btnConferir.addEventListener("click", verificarCruzadinha);
 btnReiniciar.addEventListener("click", reiniciarCruzadinha);
+
+// ----------- UI das abas (não altera a lógica da cruzadinha) -----------
+const abasContainer = document.querySelector(".abas");
+const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+const paineis = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+
+function ativarAba(tab) {
+  const alvo = tab.getAttribute("aria-controls");
+
+  tabs.forEach((item, indice) => {
+    const ativa = item === tab;
+    item.classList.toggle("ativa", ativa);
+    item.setAttribute("aria-selected", String(ativa));
+    item.tabIndex = ativa ? 0 : -1;
+
+    if (ativa && abasContainer) {
+      abasContainer.dataset.tabAtiva = String(indice);
+    }
+  });
+
+  paineis.forEach((painel) => {
+    painel.hidden = painel.id !== alvo;
+  });
+
+  tab.focus();
+}
+
+tabs.forEach((tab) => {
+  tab.addEventListener("click", () => ativarAba(tab));
+});
+
+// Navegação por teclado no padrão de tabs acessíveis.
+if (abasContainer) {
+  abasContainer.addEventListener("keydown", (e) => {
+    if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(e.key)) return;
+
+    e.preventDefault();
+    const atual = tabs.findIndex((item) => item.getAttribute("aria-selected") === "true");
+    let proximo = atual;
+
+    if (e.key === "ArrowRight") proximo = (atual + 1) % tabs.length;
+    if (e.key === "ArrowLeft") proximo = (atual - 1 + tabs.length) % tabs.length;
+    if (e.key === "Home") proximo = 0;
+    if (e.key === "End") proximo = tabs.length - 1;
+
+    ativarAba(tabs[proximo]);
+  });
+}
