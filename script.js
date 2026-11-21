@@ -406,7 +406,8 @@ function montarListaPistas(elementoLista, palavras) {
 
     botao.type = "button";
     botao.className = "btn-pista";
-    botao.textContent = `${palavra.n}. ${palavra.pista}`;
+    botao.dataset.numero = String(palavra.n);
+    botao.textContent = palavra.pista;
     botao.dataset.textoOriginal = botao.textContent;
 
     // Ao clicar na pista, o foco vai para a primeira casa da palavra.

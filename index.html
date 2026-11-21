@@ -4,67 +4,111 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cruzadinha de Arquitetura Computacional</title>
+
+  <!-- Fontes com fallback local para funcionar mesmo sem internet -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="arrastar.css" />
 </head>
 <body>
   <canvas id="neve-canvas" aria-hidden="true"></canvas>
 
   <main class="app">
-    <header class="hero card-gelo">
-      <div>
-        <h1 class="titulo-principal">Cruzadinha de Arquitetura Computacional</h1>
-        <p class="subtitulo">Descubra os termos e complete o tabuleiro para dominar os conceitos de hardware.</p>
+    <!-- Barra superior técnica -->
+    <header class="topbar card corte reveal-on-scroll">
+      <div class="marca mono">ARQ COMP™</div>
+
+      <section class="abas" role="tablist" aria-label="Modos do jogo">
+        <button id="tab-cruzadinha" class="aba ativa mono" role="tab" aria-selected="true" aria-controls="painel-cruzadinha" type="button" tabindex="0">[ CRUZADINHA ]</button>
+        <button id="tab-arrastar" class="aba mono" role="tab" aria-selected="false" aria-controls="painel-arrastar" type="button" tabindex="-1">[ MODO ARRASTAR ]</button>
+        <span class="indicador-aba" aria-hidden="true"></span>
+      </section>
+
+      <div class="acoes-topbar">
+        <button id="toggle-neve" class="btn-toggle mono" type="button" aria-pressed="true">❄ NEVE: ON</button>
+        <button id="toggle-som" class="btn-toggle mono" type="button" aria-pressed="true">🔊 SOM: ON</button>
       </div>
-      <svg class="icone-floco" viewBox="0 0 100 100" aria-hidden="true">
-        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="6">
-          <path d="M50 10v80" />
-          <path d="M15 30l70 40" />
-          <path d="M15 70l70-40" />
-          <path d="M50 10l-8 10M50 10l8 10M50 90l-8-10M50 90l8-10" />
-          <path d="M15 30l12 0M15 30l4 10M85 70l-12 0M85 70l-4-10" />
-          <path d="M15 70l12 0M15 70l4-10M85 30l-12 0M85 30l-4 10" />
-        </g>
-      </svg>
     </header>
 
-    <section class="controles-topo card-gelo" aria-label="Controles visuais e de áudio">
-      <button id="toggle-neve" class="btn-toggle" type="button" aria-pressed="true">❄ Neve: ligada</button>
-      <button id="toggle-som" class="btn-toggle" type="button" aria-pressed="true">🔊 Som: ligado</button>
-    </section>
+    <!-- Herói com marca d'água e montanhas -->
+    <section class="hero card corte reveal-on-scroll" aria-label="Apresentação da cruzadinha">
+      <svg class="spray-watermark" viewBox="0 0 1200 420" aria-hidden="true">
+        <defs>
+          <filter id="sprayFx" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="8" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G" result="warp" />
+            <feGaussianBlur in="warp" stdDeviation="1.35" />
+          </filter>
+        </defs>
+        <text x="48" y="310" filter="url(#sprayFx)">ARQCOMP</text>
+      </svg>
 
-    <section class="abas card-gelo" role="tablist" aria-label="Modos do jogo">
-      <button id="tab-cruzadinha" class="aba ativa" role="tab" aria-selected="true" aria-controls="painel-cruzadinha" type="button" tabindex="0">Cruzadinha</button>
-      <button id="tab-arrastar" class="aba" role="tab" aria-selected="false" aria-controls="painel-arrastar" type="button" tabindex="-1">Modo Arrastar</button>
-      <span class="indicador-aba" aria-hidden="true"></span>
+      <div class="hero-conteudo">
+        <p class="mono etiqueta">[ ARQUITETURA COMPUTACIONAL ]</p>
+        <h1 class="hero-titulo">
+          <span>CRUZADINHA</span>
+          <span>ARQUITETURA COMPUTACIONAL</span>
+        </h1>
+        <p class="hero-subtitulo">Conecte pistas, preencha os blocos de gelo e domine os termos essenciais da arquitetura.</p>
+
+        <div class="hero-meta mono">
+          <span>[ EDIÇÃO 01 ]</span>
+          <span>[ 14 TERMOS ]</span>
+        </div>
+      </div>
+
+      <svg class="hero-montanhas" viewBox="0 0 1400 320" preserveAspectRatio="none" aria-hidden="true">
+        <path class="montanha camada-a" data-depth="0.08" d="M0 280L160 190L320 280L520 140L740 280L930 200L1120 280L1280 170L1400 230V320H0Z" />
+        <path class="montanha camada-b" data-depth="0.14" d="M0 300L120 240L250 300L420 170L620 300L820 210L1020 300L1200 180L1400 250V320H0Z" />
+        <path class="montanha camada-c" data-depth="0.22" d="M0 320L120 280L240 320L430 230L640 320L860 250L1050 320L1220 260L1400 300V320H0Z" />
+      </svg>
     </section>
 
     <section id="painel-cruzadinha" class="painel-aba" role="tabpanel" aria-labelledby="tab-cruzadinha">
+      <section class="secao-titulo reveal-on-scroll">
+        <div>
+          <p class="mono etiqueta">[ SPRINT 3 ]</p>
+          <h2>TABULEIRO</h2>
+        </div>
+        <p class="mono meta-tabuleiro">HORIZONTAIS: 5 / VERTICAIS: 9</p>
+      </section>
+
       <section class="conteudo-cruzadinha">
-        <section class="tabuleiro-wrapper card-gelo">
+        <section class="tabuleiro-wrapper card corte reveal-on-scroll">
           <div class="painel-conferir">
-            <p id="contador-palavras" class="contador-palavras">0 de 14 palavras</p>
+            <div class="contador-selo" aria-live="polite">
+              <div class="contador-circulo">
+                <p id="contador-display" class="contador-display" aria-hidden="true">00 / 14</p>
+              </div>
+              <p id="contador-palavras" class="contador-palavras">0 de 14 palavras</p>
+            </div>
+
             <div class="acoes-painel">
-              <button id="btn-conferir" class="btn-conferir" type="button">Conferir</button>
-              <button id="btn-reiniciar" class="btn-reiniciar" type="button">Reiniciar</button>
+              <button id="btn-conferir" class="btn-conferir" type="button">
+                CONFERIR
+                <span aria-hidden="true">↗</span>
+              </button>
+              <button id="btn-reiniciar" class="btn-reiniciar" type="button">REINICIAR</button>
             </div>
           </div>
+
           <p id="mensagem-final" class="mensagem-final oculta" aria-live="polite"></p>
 
           <!-- O tabuleiro é montado dinamicamente no script.js -->
           <div id="tabuleiro" class="tabuleiro" aria-label="Tabuleiro de cruzadinha"></div>
         </section>
 
-        <aside class="pistas card-gelo" aria-label="Lista de pistas">
+        <aside class="pistas card corte reveal-on-scroll" aria-label="Lista de pistas">
           <div class="bloco-pistas">
-            <h2>Horizontais</h2>
+            <h3>HORIZONTAIS</h3>
             <ul id="lista-horizontais"></ul>
           </div>
 
           <div class="bloco-pistas">
-            <h2>Verticais</h2>
+            <h3>VERTICAIS</h3>
             <ul id="lista-verticais"></ul>
           </div>
         </aside>
@@ -72,37 +116,20 @@
     </section>
 
     <section id="painel-arrastar" class="painel-aba" role="tabpanel" aria-labelledby="tab-arrastar" hidden>
-      <article class="arrastar-card card-gelo">
-        <svg class="ilustracao-montanha" viewBox="0 0 800 260" aria-hidden="true">
-          <defs>
-            <linearGradient id="geloGradiente" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stop-color="#dcebfacc" />
-              <stop offset="100%" stop-color="#ffffffdd" />
-            </linearGradient>
-          </defs>
-          <path d="M0 230 L140 110 L250 230 Z" fill="#1e4dd866" />
-          <path d="M150 230 L330 70 L510 230 Z" fill="#1e4dd855" />
-          <path d="M420 230 L580 95 L760 230 Z" fill="#1e4dd844" />
-          <path d="M80 230 L220 140 L340 230 Z" fill="url(#geloGradiente)" />
-          <path d="M290 230 L430 110 L560 230 Z" fill="url(#geloGradiente)" />
-          <path d="M520 230 L650 130 L780 230 Z" fill="url(#geloGradiente)" />
-          <circle cx="690" cy="52" r="22" fill="#ffffffcc" />
-        </svg>
-        <p>Em breve: arraste as respostas, destrave fases e acompanhe o explorador pela trilha.</p>
-      </article>
+      <section id="arrastar-root" class="arrastar-root"></section>
     </section>
   </main>
 
-  <footer class="rodape-montanhas" aria-hidden="true">
-    <svg viewBox="0 0 1440 260" preserveAspectRatio="none">
-      <path d="M0 220L160 120L300 220L470 80L640 220L810 130L960 220L1130 90L1280 220L1440 140V260H0Z" fill="#1E4DD833" />
-      <path d="M0 230L120 170L240 230L430 110L620 230L790 150L960 230L1130 120L1290 230L1440 180V260H0Z" fill="#1E4DD855" />
-      <path d="M0 240L100 200L220 240L400 150L560 240L760 170L930 240L1090 170L1260 240L1440 210V260H0Z" fill="#FFFFFFE8" />
-    </svg>
+  <footer class="rodape" aria-label="Rodapé decorativo">
+    <p class="rodape-frase">CONSTRUÍDO EM BITS.<br />PENSADO EM CAMADAS.</p>
+    <p class="rodape-rotulo esquerda mono">SP TECH · SPRINT 3</p>
+    <p class="rodape-rotulo direita mono">ARQ COMP · GLACIAL EDITION</p>
   </footer>
 
   <script src="script.js"></script>
   <script src="neve.js"></script>
   <script src="sons.js"></script>
+  <script src="arrastar.js"></script>
+  <script src="visual.js"></script>
 </body>
 </html>
