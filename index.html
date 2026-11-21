@@ -21,6 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/Agentecia.jpg" />
 
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="arrastar.css" />
@@ -40,6 +41,7 @@
     <button id="intro-pular" class="intro-btn-pular" type="button">Pular introdução</button>
 
     <div class="intro-stage intro-capa" data-intro-stage="capa">
+      <img id="intro-bg-foto" class="intro-bg-foto" src="assets/Agentecia.jpg" alt="" decoding="async" fetchpriority="high" />
       <svg class="intro-cena" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <defs>
           <linearGradient id="introSky" x1="0" y1="0" x2="0" y2="1">
@@ -124,8 +126,11 @@
         </g>
 
         <text x="120" y="210" class="intro-title-op">OPERAÇÃO</text>
+        <text x="128" y="370" class="intro-title-main-back">NEVASCA</text>
         <text x="120" y="360" class="intro-title-main" filter="url(#introSprayFx)">NEVASCA</text>
       </svg>
+
+      <div class="intro-legibilidade" aria-hidden="true"></div>
 
       <div class="intro-hud intro-hud-top-left">OP: NEVASCA · −32 °C · VIS 40 m</div>
       <div class="intro-hud intro-hud-top-right">
@@ -138,7 +143,15 @@
 
       <div class="intro-capa-texto">
         <p class="intro-sub">Agente Jhon Lennon · Divisão Ártica da CIA</p>
-        <p class="intro-credito">João Pedro de Castro · SPTech School</p>
+        <p class="intro-credito">
+          <span class="intro-credito-icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M12 2 20 5v6c0 5-3.3 8.9-8 11-4.7-2.1-8-6-8-11V5l8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" />
+              <path d="M8.3 12.2 10.8 14.7 15.8 9.7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <span>João Pedro de Castro · SPTech School</span>
+        </p>
         <p class="intro-credito-sub">Projeto de Arquitetura Computacional</p>
       </div>
 

@@ -18,6 +18,7 @@
   const cardCursor = document.getElementById("intro-card-cursor");
   const cardProgresso = document.getElementById("intro-progresso");
   const canvasNeve = document.getElementById("intro-neve");
+  const fotoCapa = document.getElementById("intro-bg-foto");
 
   if (!intro || !main || !footer) return;
 
@@ -480,6 +481,7 @@
     const agent = intro.querySelector(".intro-agent");
     const agentBaseX = Number(agent?.getAttribute("data-intro-base-x") || 0);
     const agentBaseY = Number(agent?.getAttribute("data-intro-base-y") || 0);
+    const foto = document.getElementById("intro-bg-foto");
 
     function tick() {
       if (!estado.parallaxAtivo || !estado.aberta) return;
@@ -494,6 +496,10 @@
 
       if (agent) {
         agent.setAttribute("transform", `translate(${(agentBaseX + estado.px * 8).toFixed(2)} ${(agentBaseY + estado.py * 4).toFixed(2)})`);
+      }
+
+      if (foto) {
+        foto.style.transform = `translate(${(estado.px * 10).toFixed(2)}px, ${(estado.py * 6).toFixed(2)}px) scale(1.06)`;
       }
 
       estado.parallaxRAF = requestAnimationFrame(tick);
@@ -533,6 +539,31 @@
       const x = Number(agent.getAttribute("data-intro-base-x") || 0);
       const y = Number(agent.getAttribute("data-intro-base-y") || 0);
       agent.setAttribute("transform", `translate(${x} ${y})`);
+    }
+
+    const foto = document.getElementById("intro-bg-foto");
+    if (foto) {
+      foto.style.transform = "scale(1.06)";
+    }
+  }
+
+  function configurarFotoCapa() {
+    if (!fotoCapa) return;
+
+    // Fallback: se a imagem falhar, remove o elemento e mantém a cena SVG.
+    fotoCapa.addEventListener("error", () => {
+      intro.classList.remove("intro-foto-carregada");
+      fotoCapa.remove();
+    });
+
+    fotoCapa.addEventListener("load", () => {
+      intro.classList.add("intro-foto-carregada");
+      fotoCapa.classList.add("carregada");
+    });
+
+    if (fotoCapa.complete && fotoCapa.naturalWidth > 0) {
+      intro.classList.add("intro-foto-carregada");
+      fotoCapa.classList.add("carregada");
     }
   }
 
@@ -603,6 +634,7 @@
   }
 
   function init() {
+    configurarFotoCapa();
     bindEvents();
     atualizarRelogioMissao();
 
