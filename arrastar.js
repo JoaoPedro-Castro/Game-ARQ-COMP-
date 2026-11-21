@@ -1112,21 +1112,30 @@
     if (drag.moveu) estado.bloquearCliqueAte = performance.now() + 160;
   }
 
+  // Caminho único para abrir fase, usado pelo card e pela trilha.
+  function tentarAbrirFase(indice, origemEl = null) {
+    if (!Number.isInteger(indice) || indice < 0 || indice >= FASES.length) return;
+
+    if (!progresso.desbloqueadas[indice]) {
+      if (origemEl) {
+        origemEl.classList.remove("travar-shake");
+        void origemEl.offsetWidth;
+        origemEl.classList.add("travar-shake");
+      }
+      toast("Essa fase ainda está bloqueada. Complete a anterior primeiro.");
+      return;
+    }
+
+    montarFase(indice);
+  }
+
   function aoClique(e) {
     if (performance.now() < estado.bloquearCliqueAte) return;
 
     const faseCard = e.target.closest(".arrastar-fase-card");
     if (faseCard) {
       const idx = Number(faseCard.dataset.phaseIndex);
-      if (!progresso.desbloqueadas[idx]) {
-        faseCard.classList.remove("travar-shake");
-        void faseCard.offsetWidth;
-        faseCard.classList.add("travar-shake");
-        toast("Essa fase ainda está bloqueada. Complete a anterior primeiro.");
-        return;
-      }
-
-      montarFase(idx);
+      tentarAbrirFase(idx, faseCard);
       return;
     }
 
@@ -1251,6 +1260,13 @@
     observer.observe(painelArrastar, {
       attributes: true,
       attributeFilter: ["hidden"]
+    });
+
+    // Listener único para a trilha pedir troca de fase.
+    document.addEventListener("trilha:escolher-fase", (e) => {
+      const fase = Number(e.detail?.fase);
+      if (!Number.isFinite(fase)) return;
+      tentarAbrirFase(fase - 1);
     });
   }
 

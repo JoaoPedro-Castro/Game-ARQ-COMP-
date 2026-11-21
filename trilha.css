@@ -1,0 +1,249 @@
+/*
+  Trilha do explorador (apenas apresentação e animações).
+  O estado vem dos eventos do modo arrastar.
+*/
+
+.trilha-card {
+  background: linear-gradient(165deg, color-mix(in srgb, var(--aco), transparent 18%), color-mix(in srgb, var(--glacial), transparent 10%));
+  border: 1px solid color-mix(in srgb, var(--gelo), transparent 60%);
+  border-radius: var(--raio-card);
+  box-shadow: 0 14px 34px #04111f54;
+  padding: 12px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.trilha-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.trilha-status {
+  margin: 0;
+  color: var(--neve);
+  font: 600 1rem/1.4 "Barlow", system-ui, sans-serif;
+}
+
+.trilha-badge {
+  border: 1px solid #d9e9fb73;
+  border-radius: var(--raio-pilula);
+  padding: 6px 10px;
+  color: var(--agua-clara);
+  font: 700 0.82rem/1 "Space Mono", ui-monospace, monospace;
+}
+
+.trilha-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--raio-medio);
+  background: linear-gradient(180deg, #18344d 0%, #204868 62%, #eaf4fb 100%);
+}
+
+.trilha-caminho-base {
+  stroke: color-mix(in srgb, var(--gelo), #ffffff 15%);
+  stroke-width: 12;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 10 11;
+  opacity: 0.9;
+}
+
+.trilha-caminho-progresso {
+  stroke: var(--agua);
+  stroke-width: 14;
+  fill: none;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 7px #2ec4b684);
+}
+
+.fase-flag {
+  cursor: pointer;
+  outline: none;
+}
+
+.fase-hit {
+  fill: transparent;
+}
+
+.fase-bandeira {
+  transition: transform 180ms ease;
+}
+
+.fase-mastro {
+  stroke: #f2f8ff;
+  stroke-width: 3;
+}
+
+.fase-pano {
+  fill: #8fb6d3;
+  rx: 3;
+}
+
+.fase-label {
+  opacity: 0;
+  transition: opacity 140ms ease;
+  pointer-events: none;
+}
+
+.fase-flag:hover .fase-label,
+.fase-flag:focus .fase-label,
+.fase-flag:focus-visible .fase-label {
+  opacity: 1;
+}
+
+.fase-flag .fase-anel {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 4;
+}
+
+.fase-flag:focus .fase-anel,
+.fase-flag:focus-visible .fase-anel {
+  stroke: #dbe8ff;
+}
+
+.fase-flag.liberada .fase-pano {
+  fill: var(--agua);
+}
+
+.fase-flag.liberada .fase-pulso {
+  animation: fasePulse 1.7s ease-in-out infinite;
+}
+
+.fase-flag.concluida .fase-pano {
+  fill: var(--royal);
+}
+
+.fase-flag.atual .fase-anel {
+  stroke: #8ec0ff;
+}
+
+.fase-flag.bloqueada {
+  opacity: 0.65;
+}
+
+.fase-flag.bloqueada .fase-pano {
+  fill: #8ca3b8;
+}
+
+.fase-flag.bloqueada.tremor {
+  animation: flagShake 260ms ease;
+}
+
+.fase-estrelas {
+  font-size: 8px;
+  fill: #ffd46b;
+}
+
+.fase-lock {
+  font-size: 12px;
+}
+
+.explorer-wrap {
+  transform-origin: center center;
+}
+
+.explorer-wrap.andando .perna-esq { animation: pernaA 280ms ease-in-out infinite alternate; }
+.explorer-wrap.andando .perna-dir { animation: pernaB 280ms ease-in-out infinite alternate; }
+.explorer-wrap.andando .cachecol { animation: cachecol 420ms ease-in-out infinite alternate; }
+.explorer-wrap.andando .corpo { animation: corpoBalanço 320ms ease-in-out infinite alternate; }
+
+.explorer-wrap.parado .corpo { animation: respirar 2s ease-in-out infinite; }
+.explorer-wrap.parado .olhos { animation: piscar 5s steps(1) infinite; }
+
+.explorer-wrap.pulinho { animation: pulinho 560ms ease; }
+.explorer-wrap.tropeco { animation: tropeco 320ms ease; }
+.explorer-wrap.aceno .braco-dir { animation: acenar 520ms ease-in-out 2; transform-origin: 50% 12px; }
+
+.fala-bolha {
+  opacity: 0;
+}
+
+.fala-bolha.visivel {
+  opacity: 1;
+}
+
+.trilha-card.trilha-pausada .fase-pulso,
+.trilha-card.trilha-pausada .explorer-wrap .corpo,
+.trilha-card.trilha-pausada .explorer-wrap .olhos,
+.trilha-card.trilha-pausada .explorer-wrap .perna-esq,
+.trilha-card.trilha-pausada .explorer-wrap .perna-dir,
+.trilha-card.trilha-pausada .explorer-wrap .cachecol {
+  animation-play-state: paused;
+}
+
+@keyframes fasePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+@keyframes flagShake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-6deg); }
+  70% { transform: rotate(5deg); }
+}
+
+@keyframes pernaA {
+  from { transform: rotate(-8deg); }
+  to { transform: rotate(8deg); }
+}
+
+@keyframes pernaB {
+  from { transform: rotate(9deg); }
+  to { transform: rotate(-9deg); }
+}
+
+@keyframes cachecol {
+  from { transform: rotate(-3deg) translateY(0); }
+  to { transform: rotate(5deg) translateY(-1px); }
+}
+
+@keyframes corpoBalanço {
+  from { transform: translateY(-1px); }
+  to { transform: translateY(1px); }
+}
+
+@keyframes respirar {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes piscar {
+  0%, 92%, 100% { opacity: 1; }
+  93%, 96% { opacity: 0.2; }
+}
+
+@keyframes pulinho {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes tropeco {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-9deg); }
+  70% { transform: rotate(6deg); }
+}
+
+@keyframes acenar {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-18deg); }
+}
+
+@media (max-width: 720px) {
+  .trilha-topo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trilha-card * {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}

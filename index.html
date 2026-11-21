@@ -4,6 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cruzadinha de Arquitetura Computacional</title>
+  <script>
+    // Evita piscar a intro quando ela já foi vista nesta sessão.
+    (function () {
+      try {
+        if (sessionStorage.getItem("arqcomp-intro-vista") === "1") {
+          document.documentElement.classList.add("intro-ja-vista");
+        }
+      } catch (e) {
+        // Se o storage falhar, segue sem bloquear a intro.
+      }
+    })();
+  </script>
 
   <!-- Fontes com fallback local para funcionar mesmo sem internet -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,9 +24,153 @@
 
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="arrastar.css" />
+  <link rel="stylesheet" href="trilha.css" />
+  <link rel="stylesheet" href="intro.css" />
 </head>
 <body>
   <canvas id="neve-canvas" aria-hidden="true"></canvas>
+
+  <section id="intro" role="dialog" aria-modal="true" aria-label="Introdução: Operação Nevasca">
+    <canvas id="intro-neve" aria-hidden="true"></canvas>
+
+    <div class="intro-vinheta" aria-hidden="true"></div>
+    <div class="intro-grain" aria-hidden="true"></div>
+    <div class="intro-scanlines" aria-hidden="true"></div>
+
+    <button id="intro-pular" class="intro-btn-pular" type="button">Pular introdução</button>
+
+    <div class="intro-stage intro-capa" data-intro-stage="capa">
+      <svg class="intro-cena" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="introSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#08111c" />
+            <stop offset="100%" stop-color="#1b3a52" />
+          </linearGradient>
+          <linearGradient id="introGlow" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#7ec8ff" stop-opacity="0.65" />
+            <stop offset="100%" stop-color="#0f1a2e" stop-opacity="0" />
+          </linearGradient>
+          <filter id="introSprayFx" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="12" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="26" xChannelSelector="R" yChannelSelector="B" result="warp" />
+            <feGaussianBlur stdDeviation="1.2" />
+          </filter>
+        </defs>
+
+        <rect width="1920" height="1080" fill="url(#introSky)" />
+
+        <g class="intro-light-sweep">
+          <ellipse cx="1430" cy="540" rx="460" ry="240" fill="url(#introGlow)" />
+        </g>
+
+        <g class="intro-mountains-back" data-intro-depth="0.08">
+          <path d="M0 790L220 600L430 790L690 490L940 790L1230 560L1500 790L1710 540L1920 700V1080H0Z" fill="#1d3448" />
+        </g>
+        <g class="intro-mountains-mid" data-intro-depth="0.14">
+          <path d="M0 860L180 690L400 860L650 590L910 860L1180 640L1450 860L1680 620L1920 760V1080H0Z" fill="#274a66" />
+        </g>
+        <g class="intro-mountains-front" data-intro-depth="0.2">
+          <path d="M0 920L170 800L380 920L610 730L860 920L1130 760L1400 920L1660 760L1920 860V1080H0Z" fill="#d8e7f5" />
+        </g>
+
+        <g class="intro-base" data-intro-depth="0.16">
+          <rect x="1240" y="720" width="360" height="120" rx="16" fill="#0f2436" />
+          <rect x="1260" y="690" width="90" height="30" rx="8" fill="#1e4dd8" />
+          <circle class="intro-luz-ambar" cx="1282" cy="742" r="6" fill="#FFB020" />
+          <circle class="intro-luz-ambar" cx="1320" cy="742" r="6" fill="#FFB020" />
+          <circle class="intro-luz-ambar" cx="1358" cy="742" r="6" fill="#FFB020" />
+          <rect x="1486" y="600" width="8" height="120" fill="#b8d0e5" />
+          <circle class="intro-luz-torre" cx="1490" cy="590" r="7" fill="#ff4f56" />
+        </g>
+
+        <g class="intro-footprints" opacity="0.28">
+          <ellipse cx="510" cy="820" rx="18" ry="8" fill="#d2e4f6" />
+          <ellipse cx="550" cy="846" rx="18" ry="8" fill="#d2e4f6" />
+          <ellipse cx="588" cy="872" rx="18" ry="8" fill="#d2e4f6" />
+          <ellipse cx="628" cy="898" rx="18" ry="8" fill="#d2e4f6" />
+        </g>
+
+        <g class="intro-agent" data-intro-depth="0.28" data-intro-base-x="640" data-intro-base-y="780" transform="translate(640 780)">
+          <ellipse cx="0" cy="130" rx="120" ry="30" fill="#020c16" opacity="0.42" />
+
+          <g class="agent-cape">
+            <path d="M-70 62Q-154 100-128 148Q-72 138-34 108Z" fill="#1a3451" opacity="0.75" />
+          </g>
+
+          <path d="M-64 46L-18 -56L72 -52L116 18L95 100L22 108L-58 84Z" fill="#f0f7ff" stroke="#12304a" stroke-width="5" />
+          <rect x="6" y="-25" width="54" height="90" rx="12" fill="#122739" />
+          <rect x="22" y="-10" width="22" height="46" rx="6" fill="#2d4d6e" />
+          <rect x="-58" y="-2" width="34" height="88" rx="12" fill="#e5f2ff" stroke="#12304a" stroke-width="5" />
+          <rect x="78" y="14" width="34" height="76" rx="12" fill="#e5f2ff" stroke="#12304a" stroke-width="5" />
+
+          <rect x="36" y="86" width="36" height="58" rx="12" fill="#1b334d" />
+          <rect x="-10" y="74" width="42" height="72" rx="12" fill="#1b334d" />
+          <rect x="26" y="132" width="52" height="24" rx="10" fill="#0b1b28" />
+          <rect x="-12" y="132" width="52" height="24" rx="10" fill="#0b1b28" />
+
+          <path d="M102 52L238 24L250 42L112 72Z" fill="#0a1320" />
+          <rect x="190" y="8" width="62" height="14" rx="6" fill="#111e2d" />
+
+          <circle cx="12" cy="-95" r="46" fill="#15273a" stroke="#8ec1ff" stroke-width="3" />
+          <path d="M-22 -109Q10 -132 42 -112L48 -88Q18 -72-20 -88Z" fill="#24506f" />
+          <rect x="-16" y="-108" width="58" height="24" rx="12" fill="#6fc2ff" opacity="0.65" />
+          <path d="M-26 -70Q14 -50 46 -72L48 -50Q8 -26-28 -45Z" fill="#0b1b28" />
+
+          <path d="M-8 -28H74L52 -4H-20Z" fill="#2ec4b6" />
+          <path d="M-24 -24Q-70 2-62 26Q-16 18 2 -8Z" fill="#2ec4b6" />
+
+          <path d="M-68 46Q-106 58-124 86Q-94 90-72 70Z" fill="#9ed8ff" opacity="0.75" />
+          <path d="M112 34Q148 40 176 62Q146 72 116 56Z" fill="#9ed8ff" opacity="0.75" />
+        </g>
+
+        <text x="120" y="210" class="intro-title-op">OPERAÇÃO</text>
+        <text x="120" y="360" class="intro-title-main" filter="url(#introSprayFx)">NEVASCA</text>
+      </svg>
+
+      <div class="intro-hud intro-hud-top-left">OP: NEVASCA · −32 °C · VIS 40 m</div>
+      <div class="intro-hud intro-hud-top-right">
+        <span id="intro-relogio">03:41:07</span>
+        <span>RADIO ▂▄▆█</span>
+      </div>
+      <div class="intro-hud intro-hud-bottom-left">COORD: 68.129 N · 149.493 W</div>
+      <div class="intro-hud intro-hud-bottom-right">VENTO 48 km/h</div>
+      <div class="intro-confidencial">CONFIDENCIAL</div>
+
+      <div class="intro-capa-texto">
+        <p class="intro-sub">Agente Jhon Lennon · Divisão Ártica da CIA</p>
+        <p class="intro-credito">João Pedro de Castro · SPTech School</p>
+        <p class="intro-credito-sub">Projeto de Arquitetura Computacional</p>
+      </div>
+
+      <button id="intro-iniciar" class="intro-btn-principal" type="button">
+        INICIAR MISSÃO
+        <span aria-hidden="true">➜</span>
+      </button>
+
+      <p class="intro-aviso">Personagem e história fictícios.</p>
+    </div>
+
+    <div class="intro-stage intro-briefing" data-intro-stage="briefing" hidden>
+      <div class="intro-briefing-fundo"></div>
+      <article class="intro-dossie">
+        <header>
+          <p class="intro-dossie-topo">ARQUIVO CONFIDENCIAL · NÍVEL 5</p>
+          <h2 id="intro-card-titulo">CHEGADA</h2>
+        </header>
+
+        <p id="intro-card-texto" class="intro-card-texto"></p>
+        <p id="intro-card-cursor" class="intro-cursor">▍</p>
+
+        <footer class="intro-briefing-footer">
+          <button id="intro-voltar" class="intro-btn-sec" type="button">Voltar</button>
+          <span id="intro-progresso" class="intro-passo">1/4</span>
+          <button id="intro-continuar" class="intro-btn-principal" type="button">Continuar</button>
+        </footer>
+      </article>
+    </div>
+
+    <div id="intro-flash" class="intro-flash" aria-hidden="true"></div>
+  </section>
 
   <main class="app">
     <button id="btn-como-jogar" class="btn-como-jogar" type="button">? Como jogar</button>
@@ -38,6 +194,7 @@
       </section>
 
       <div class="acoes-topbar">
+        <button id="btn-rever-intro" class="btn-toggle" type="button">🎬 Rever introdução</button>
         <button id="toggle-neve" class="btn-toggle" type="button" aria-pressed="true">❄ Neve: ligada</button>
         <button id="toggle-som" class="btn-toggle" type="button" aria-pressed="true">🔊 Som: ligado</button>
       </div>
@@ -209,8 +366,10 @@
   <script src="script.js"></script>
   <script src="neve.js"></script>
   <script src="sons.js"></script>
+  <script src="trilha.js"></script>
   <script src="arrastar.js"></script>
   <script src="visual.js"></script>
   <script src="ux.js"></script>
+  <script src="intro.js"></script>
 </body>
 </html>
