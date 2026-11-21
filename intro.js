@@ -44,7 +44,8 @@
   ];
 
   const estado = {
-    aberta: !document.documentElement.classList.contains("intro-ja-vista"),
+    // A intro sempre abre ao carregar a página.
+    aberta: true,
     stage: "capa",
     indiceCartao: 0,
     digitando: false,
@@ -634,6 +635,7 @@
   }
 
   function init() {
+    document.documentElement.classList.remove("intro-ja-vista");
     configurarFotoCapa();
     bindEvents();
     atualizarRelogioMissao();

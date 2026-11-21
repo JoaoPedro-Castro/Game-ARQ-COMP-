@@ -4,18 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cruzadinha de Arquitetura Computacional</title>
-  <script>
-    // Evita piscar a intro quando ela já foi vista nesta sessão.
-    (function () {
-      try {
-        if (sessionStorage.getItem("arqcomp-intro-vista") === "1") {
-          document.documentElement.classList.add("intro-ja-vista");
-        }
-      } catch (e) {
-        // Se o storage falhar, segue sem bloquear a intro.
-      }
-    })();
-  </script>
 
   <!-- Fontes com fallback local para funcionar mesmo sem internet -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -37,8 +25,6 @@
     <div class="intro-vinheta" aria-hidden="true"></div>
     <div class="intro-grain" aria-hidden="true"></div>
     <div class="intro-scanlines" aria-hidden="true"></div>
-
-    <button id="intro-pular" class="intro-btn-pular" type="button">Pular introdução</button>
 
     <div class="intro-stage intro-capa" data-intro-stage="capa">
       <img id="intro-bg-foto" class="intro-bg-foto" src="assets/Agentecia.jpg" alt="" decoding="async" fetchpriority="high" />
