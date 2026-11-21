@@ -47,7 +47,7 @@ Depois da introdução, o desafio passa pela cruzadinha e pelo modo de fases com
 
 ## Site publicado
 
-https://SEU-USUARIO.github.io/arqcomp-cruzadinha/
+https://joaopedro-castro.github.io/Game-ARQ-COMP-/
 
 ## Estrutura de arquivos
 
